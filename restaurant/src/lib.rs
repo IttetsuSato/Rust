@@ -1,30 +1,18 @@
-// モジュールを使うことで、関連する定義を一つにまとめる
-// front_of_houseモジュールの親には暗黙的に作られたcrateモジュールがある
-mod front_of_house {
-    pub mod hosting {
-        pub fn add_to_waitlist() {}
+// front_of_houseというファイルから読み込む
+mod front_of_house;
 
-        fn seat_at_table() {}
-    }
+// // useを使ってmoduleをスコープに持ち込む
+// // あえて使用したい関数の親モジュールを読み込むことで、関数がローカルで定義されていないことを明らかにする
+// use crate::front_of_house::hosting;
 
-    mod serving {
-        fn take_order() {}
+// // 再公開 (re-export) することで、他のモジュールからも使えるようになる
+// pub use crate::front_of_house::hosting;
 
-        fn serve_order() {}
+use front_of_house::hosting;
 
-        fn take_payment() {}
-    }
+fn serve_order() {
+    println!("serve_order");
 }
-
-pub fn eat_at_restaurant() {
-    // 絶対パス
-    crate::front_of_house::hosting::add_to_waitlist();
-
-    // 相対パス(front_of_houseはeat_at_restaurantと同じ階層)
-    front_of_house::hosting::add_to_waitlist();
-}
-
-fn serve_order {}
 
 mod back_of_house {
     // enumはpubをつけると全て公開される
@@ -57,6 +45,14 @@ mod back_of_house {
 }
 
 pub fn eat_at_restaurant() {
+        // // 絶対パス
+    // crate::front_of_house::hosting::add_to_waitlist();
+
+    // // 相対パス(front_of_houseはeat_at_restaurantと同じ階層)
+    // front_of_house::hosting::add_to_waitlist();
+
+    hosting::add_to_waitlist();
+
     // 夏 (summer) にライ麦 (Rye) パン付き朝食を注文
     let mut meal = back_of_house::Breakfast::summer("Rye");
     // やっぱり別のパンにする
@@ -71,3 +67,14 @@ pub fn eat_at_restaurant() {
     let order1 = back_of_house::Appetizer::Soup;
     let order2 = back_of_house::Appetizer::Salad;
 }
+
+// use std::fmt::Result;
+// use std::io::Result as IoResult; // asで名前を変更することができる
+
+// fn function1() -> Result {
+//     // --snip--
+// }
+
+// fn function2() -> IoResult<()> {
+//     // --snip--
+// }
