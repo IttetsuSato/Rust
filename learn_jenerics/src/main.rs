@@ -1,4 +1,6 @@
-fn largest<T>(list: &[T]) -> T {
+// Tには、トレイト境界を指定している。
+// Tには、比較演算子が使用できるPartialOrdトレイトと、i32やcharなどのCopyトレイトを実装している型のみを指定できる。
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     let mut largest = list[0];
 
     for &item in list.iter() {
